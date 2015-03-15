@@ -12,6 +12,7 @@ class Graphics
 public:
   Graphics(sf::RenderWindow* window);
   void drawGame(Game* game);
+  void drawLevel(Level* lvl);
   inline sf::RenderWindow* const getWindow() {return m_window;}
   virtual ~Graphics();
 

@@ -8,7 +8,7 @@
 
 const std::string DEFAULT_FONT="menu.ttf";
 const std::string TO_FONT_FILE="../dat/font/";
-const short MENU_CHAR_SIZE=48;
+const short MENU_CHAR_SIZE=36;
 
 
 class Graphics;
@@ -20,7 +20,7 @@ public:
   Menu(Core* core);
   void updateControl(sf::Event event);
   void draw(Graphics* g);
-  void update(){}
+  void update(sf::Vector2f mouse);
   virtual ~Menu();
 
 protected:
@@ -31,7 +31,6 @@ protected:
 
   size_t m_choice;
   bool m_running;
-  const short NB_CHOICE=3;
 };
 
 #endif // MENU_HPP

@@ -11,6 +11,7 @@ class Level
 {
 public :
   Level(string path);
+  Level(int w, int h);
   
   inline vector<vector<Square*>> getSquares() const {return m_squares;}
   inline short getWidth() {return m_squares[0].size();}

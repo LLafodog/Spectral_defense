@@ -36,7 +36,7 @@ void Game::updateControl(Event event)
     }
 }
 
-void Game::update()
+void Game::update(sf::Vector2f mouse)
 {
 
 }

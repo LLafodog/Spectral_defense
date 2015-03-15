@@ -12,12 +12,17 @@ using namespace sf;
 #include<iostream>
 using namespace std;
 
+const int BUTTON_X=0.3*WINDOW_WIDTH;
+const int BUTTON_WIDTH=0.3*WINDOW_WIDTH;
+
 enum CHOICE_LIST
   {
     PLAY,
     LOAD,
     OPTION,
-    QUIT
+    EDITOR,
+    QUIT,
+    NB_CHOICE
   };
 
 Menu::Menu(Core* core):
@@ -34,20 +39,38 @@ void Menu::updateControl(Event event)
     {
     default : break;
     case Event::Closed : m_core->quit();break;  
+    case Event::MouseButtonPressed:
+      {
+	switch(event.key.code)
+	  {
+	  default:break;
+	  case Mouse::Left: validate();break;
+	  }
+      }
     case Event::KeyPressed:
       {
 	switch(event.key.code)
 	  {
-	  case Keyboard::Space : validate(); break;
-	  case Keyboard::Down: {m_choice++; m_choice%=NB_CHOICE+1;}break;
+	  case Keyboard::Return: validate(); break;
+	  case Keyboard::Down: {m_choice++; m_choice%=NB_CHOICE;}break;
 	  case Keyboard::Up:
 	    {
 	      m_choice--;
-	      if(m_choice>NB_CHOICE){m_choice = NB_CHOICE;}
+	      if(m_choice>NB_CHOICE){m_choice = NB_CHOICE-1;}
 	    }break;
 	  default : break;
 	  }
       }break;
+    }
+}
+
+void Menu::update(sf::Vector2f mouse)
+{
+  for(size_t i(0);i<NB_CHOICE;i++)
+    {
+      double button_y = 0.3*WINDOW_HEIGHT+(0.05*WINDOW_HEIGHT+MENU_CHAR_SIZE*1.5)*i;
+      FloatRect button(BUTTON_X,button_y, BUTTON_WIDTH,0.05*WINDOW_HEIGHT+MENU_CHAR_SIZE); 
+      if(button.contains(mouse.x,mouse.y))m_choice=i;
     }
 }
 
@@ -56,10 +79,12 @@ void Menu::validate()
   assert(m_core);
   switch(m_choice)
     {
-    case PLAY :{m_active=false; m_core->quitMenu();}break;
+    case PLAY :{m_active=false; m_core->restoreScene();}break;
     case LOAD :{}break;
     case OPTION :{} break;
+    case EDITOR:{m_core->putScene(EDITION);} break;
     case QUIT:{m_core->quit();}
+    default:assert(false);break;
     }
 }
 
@@ -82,7 +107,8 @@ void Menu::draw(Graphics* g)
   addButton(w,"Play",0);
   addButton(w,"Load",1);
   addButton(w,"Option",2);
-  addButton(w,"Quit",3);
+  addButton(w,"Editor",3);
+  addButton(w,"Quit",4);
 
   w->display();
 }
@@ -139,12 +165,11 @@ void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) cons
 {
   assert(w);
   // data
-  int w_width=w->getView().getSize().x,
-    w_height=w->getView().getSize().y;
+  int w_width=WINDOW_WIDTH,
+    w_height=WINDOW_HEIGHT;
 
-  int x = w_width*0.3,
-    y = w_height*0.3,
-    button_width=w_width*0.4;
+  int x = BUTTON_X,
+    y = w_height*0.3; 
 
 
   // Font
@@ -156,7 +181,7 @@ void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) cons
   tex.setColor(Color::Red);
   int tex_width=tex.getGlobalBounds().width,
     tex_height=tex.getCharacterSize()+MENU_CHAR_SIZE/2,
-    tex_x = (x+button_width/2-tex_width/2);
+    tex_x = (x+BUTTON_WIDTH/2-tex_width/2);
 
   y+=n_button*(tex_height+0.05*w_height);
   tex.setPosition(tex_x,y);
@@ -167,8 +192,8 @@ void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) cons
   Vertex button[4];
   // position
   button[0].position=Vector2f(x,y);
-  button[1].position=Vector2f(x+max(button_width,tex_width),y);
-  button[2].position=Vector2f(x+max(button_width,tex_width),y+tex_height);
+  button[1].position=Vector2f(x+max(BUTTON_WIDTH,tex_width),y);
+  button[2].position=Vector2f(x+max(BUTTON_WIDTH,tex_width),y+tex_height);
   button[3].position=Vector2f(x,y+tex_height);
   // Color if Selected
   if(n_button==m_choice)

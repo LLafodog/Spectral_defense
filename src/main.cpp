@@ -3,8 +3,7 @@
 
 int main()
 {
-  sf::RenderWindow window(sf::VideoMode(800,600),"Spectral_Defense");
-  Core core(&window);
+  Core core;
   core.run();
 
   return 0;

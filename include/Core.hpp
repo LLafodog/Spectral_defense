@@ -8,20 +8,33 @@
 
 using namespace std;
 
+const int WINDOW_WIDTH=800;
+const int WINDOW_HEIGHT=600;
+
 class Graphics;
 class Game;
 class Menu;
 class Scene;
 
+enum SCENE_ORDER
+  {
+    MENU,
+    GAME,
+    // NEW SCENE BEFORE
+    EDITION,
+    NB_SCENE
+  };
+
+
 class Core
 {
 
 public:
-  Core(sf::RenderWindow* w);
+  Core();
   void run(); // game loop
   void quit() {m_window->close();}
-  void goToMenu();
-  void quitMenu();
+  void putScene(size_t index);
+  void restoreScene();
   virtual ~Core();
 
 protected:

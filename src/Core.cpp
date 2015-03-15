@@ -4,8 +4,10 @@
 #include<Graphics.hpp>
 #include<TextureEngine.hpp>
 #include<assert.h>
+
 #include<Game.hpp>
 #include<Menu.hpp>
+#include<Editor.hpp>
 
 #include<ctime>
 // debug
@@ -13,16 +15,9 @@
 
 using namespace sf;
 
-enum SCENE_ORDER
-  {
-    MENU,
-    GAME
-  };
-
-Core::Core(RenderWindow* w) :
-  m_window(w)
+Core::Core()
 {
-  assert(w);
+  m_window=new RenderWindow(VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Spectral_Defense");
   init();
 }
 
@@ -33,6 +28,8 @@ void Core::init()
   m_scenes.clear();
   m_scenes.push_back(new Menu(this));
   m_scenes.push_back(new Game(this));
+  // new scene before
+  m_scenes.push_back(new Editor(this));
   m_graphics=new Graphics(m_window);
   m_currentScene=m_scenes[m_currentSceneIndex];
   TextureEngine::getInstance(); // load the textures 
@@ -50,7 +47,7 @@ void Core::run()
 	  if(event.type == Event::Closed){quit();}
 	  if(event.type == Event::KeyPressed 
 	     && event.key.code == Keyboard::Escape)
-	    {goToMenu();}
+	    {putScene(MENU);}
 	  m_currentScene->updateControl(event); 
 	}
       update();
@@ -65,10 +62,10 @@ void Core::update()
   double dt = 1.0/(m_clock.restart().asMilliseconds()/1000.0);
   m_window->setTitle("Spectral_defense (FPS:"+to_string((int)dt)+")");
  
-  assert(m_currentScene);
+  assert(m_currentScene && m_window);
   if(m_currentScene->isRunning())
     {
-      m_currentScene->update();
+      m_currentScene->update(m_window->mapPixelToCoords(Mouse::getPosition(*m_window)));
     }
   else
     {
@@ -78,14 +75,14 @@ void Core::update()
     }
 }
 
-void Core::goToMenu()
-  {
-    m_currentScene = m_scenes[MENU];
-    m_currentScene->setRunning(true);
-  }
+void Core::putScene(size_t index)
+{
+  assert(index>=0 && index <NB_SCENE);
+  m_currentScene = m_scenes[index];
+  m_currentScene->setRunning(true);
+}
 
-
-void Core::quitMenu()
+void Core::restoreScene()
   {
     m_currentScene = m_scenes[m_currentSceneIndex];
   }
@@ -99,5 +96,5 @@ Core::~Core()
 {
   for(Scene* s:m_scenes){delete s;}
   delete m_graphics;
-
+  delete m_window;
 }

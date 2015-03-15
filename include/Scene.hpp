@@ -14,7 +14,7 @@ public :
   inline virtual bool isRunning() {return m_active;}
   inline void setRunning(bool b) {m_active=b;}
   virtual void updateControl(sf::Event event)=0;
-  virtual void update()=0;
+  virtual void update(sf::Vector2f mouse)=0;
   virtual void draw(Graphics* g)=0;
   virtual ~Scene();
 

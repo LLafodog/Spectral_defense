@@ -14,7 +14,7 @@ public:
   // Scene
   void updateControl(sf::Event event);
   inline Level* getCurrentLevel() {return &m_levels[m_currentLevel];}
-  void update();
+  void update(sf::Vector2f mouse);
   void draw(Graphics* g);
 
   virtual ~Game();

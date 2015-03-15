@@ -23,6 +23,11 @@ void Graphics::drawGame(Game* game)
 {
   assert(m_window && game);
   Level* lvl = game->getCurrentLevel();
+  drawLevel(lvl);
+ }
+
+void Graphics::drawLevel(Level* lvl)
+{
   assert(lvl);
   m_window->clear(Color(4,139,154));
     
@@ -44,6 +49,7 @@ void Graphics::drawGame(Game* game)
 
   m_window->draw(va,TextureEngine::getInstance()->getTileset());
   m_window->display();
+
 }
 
 void Graphics::addLevel(Level* lvl, VertexArray& va)
