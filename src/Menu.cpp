@@ -1,8 +1,10 @@
 #include<Menu.hpp>
 
 #include<SFML/Graphics.hpp>
+#include<Graphics.hpp>
 #include<assert.h>
 #include<TextureEngine.hpp>
+#include<Core.hpp>
 
 using namespace sf;
 
@@ -18,24 +20,24 @@ enum CHOICE_LIST
     QUIT
   };
 
-Menu::Menu()
+Menu::Menu(Core* core):
+  Scene(core)
 {
-  m_quit=false;
-  m_activated=true;
+  m_running=true;
   m_choice=0;
 }
 
-void Menu::update(Event event)
+void Menu::updateControl(Event event)
 {
+  assert(m_core);
   switch(event.type)
     {
     default : break;
-    case Event::Closed : m_quit=true;break;  
+    case Event::Closed : m_core->quit();break;  
     case Event::KeyPressed:
       {
 	switch(event.key.code)
 	  {
-	    //	  case Keyboard::Escape : m_quit=true;close(); break;
 	  case Keyboard::Space : validate(); break;
 	  case Keyboard::Down: {m_choice++; m_choice%=NB_CHOICE+1;}break;
 	  case Keyboard::Up:
@@ -51,17 +53,20 @@ void Menu::update(Event event)
 
 void Menu::validate()
 {
+  assert(m_core);
   switch(m_choice)
     {
-    case PLAY :{close();}break;
+    case PLAY :{m_active=false; m_core->quitMenu();}break;
     case LOAD :{}break;
     case OPTION :{} break;
-    case QUIT:{m_quit=true;close();}
+    case QUIT:{m_core->quit();}
     }
 }
 
-void Menu::draw(RenderWindow* w)
+void Menu::draw(Graphics* g)
 {
+  assert(g);
+  RenderWindow* w=g->getWindow();
   assert(w);
   int width = w->getView().getSize().x,
     height = w->getView().getSize().y;
@@ -190,5 +195,5 @@ void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) cons
 
 Menu::~Menu()
 {
-
+  
 }

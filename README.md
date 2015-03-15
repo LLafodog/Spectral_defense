@@ -12,7 +12,7 @@ I should invent one.
 ## Ennemy Units
 -----------
 Make a list, idiot !
-Ideas :
+* Ideas :
       * Basic ghost
       * Skeleton
       * zombie
@@ -22,7 +22,7 @@ Ideas :
 
 ## Ally turret
 Make a list, idiot
-Ideas :
+* Ideas :
       * Arrow turret ( find a better name, scumbag)
       * Ice turret
       * Fire turret
@@ -41,7 +41,7 @@ So, we have to
 3. Survive the large amount of waves to gain money and improve your turrets.
 
 ### TO DO LIST
-Gameplay:
+* Gameplay:
 	* Implement the money
 	* Implement the turrets
 	* Implement the enemies
@@ -49,11 +49,11 @@ Gameplay:
 	* Implement win/lose
 	* Implement life ( unit and yours )
 
-Technical:
+* Technical:
 	* Working menu
 	* Implement the pause capacity
 	* Implement an easy way to add levels
 	* **MAKE AN EDITOR** 
 
-Graphisms:
+* Graphisms:
 	* Find a sprite for the monsters

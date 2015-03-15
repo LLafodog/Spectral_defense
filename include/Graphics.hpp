@@ -3,6 +3,7 @@
 
 #include<SFML/Graphics.hpp>
 
+class Game;
 class Level;
 
 class Graphics
@@ -10,7 +11,8 @@ class Graphics
 
 public:
   Graphics(sf::RenderWindow* window);
-  void draw(Level* lvl);
+  void drawGame(Game* game);
+  inline sf::RenderWindow* const getWindow() {return m_window;}
   virtual ~Graphics();
 
 protected:
