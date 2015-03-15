@@ -37,11 +37,11 @@ void Menu::update(Event event)
 	  {
 	    //	  case Keyboard::Escape : m_quit=true;close(); break;
 	  case Keyboard::Space : validate(); break;
-	  case Keyboard::Down: {m_choice++; m_choice%=NB_CHOICE;}break;
+	  case Keyboard::Down: {m_choice++; m_choice%=NB_CHOICE+1;}break;
 	  case Keyboard::Up:
 	    {
 	      m_choice--;
-	      if(m_choice<0){m_choice = NB_CHOICE;}
+	      if(m_choice>NB_CHOICE){m_choice = NB_CHOICE;}
 	    }break;
 	  default : break;
 	  }
@@ -75,6 +75,9 @@ void Menu::draw(RenderWindow* w)
   w->draw(va, TextureEngine::getInstance()->getMenuset());
   
   addButton(w,"Play",0);
+  addButton(w,"Load",1);
+  addButton(w,"Option",2);
+  addButton(w,"Quit",3);
 
   w->display();
 }
@@ -112,9 +115,9 @@ void Menu::addTitle(VertexArray& va, int w, int h) const
   Vertex title[4];
   // position
   title[0].position=Vector2f(0.1*w,0.1*h);
-  title[1].position=Vector2f(0.8*w,0.1*h);
+  title[1].position=Vector2f(0.9*w,0.1*h);
   title[3].position=Vector2f(0.1*w,0.2*h);
-  title[2].position=Vector2f(0.8*w,0.2*h);
+  title[2].position=Vector2f(0.9*w,0.2*h);
   // Texture
   title[0].texCoords=TextureEngine::getInstance()->getCoords("menu_title_tl");
   title[1].texCoords=TextureEngine::getInstance()->getCoords("menu_title_tr");
@@ -135,8 +138,8 @@ void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) cons
     w_height=w->getView().getSize().y;
 
   int x = w_width*0.3,
-    y = w_height*(0.3+n_button*0.1),
-    button_width=w_width*0.6;
+    y = w_height*0.3,
+    button_width=w_width*0.4;
 
 
   // Font
@@ -145,28 +148,39 @@ void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) cons
 
   // Texte
   Text tex(text,font,MENU_CHAR_SIZE);
-  tex.setPosition(x,y);
+  tex.setColor(Color::Red);
+  int tex_width=tex.getGlobalBounds().width,
+    tex_height=tex.getCharacterSize()+MENU_CHAR_SIZE/2,
+    tex_x = (x+button_width/2-tex_width/2);
 
-  int tex_width=tex.getGlobalBounds().width+10,
-    tex_height=tex.getCharacterSize()+10;
+  y+=n_button*(tex_height+0.05*w_height);
+  tex.setPosition(tex_x,y);
 
+
+  /// Drawing the button
   VertexArray va(Quads);
-
   Vertex button[4];
   // position
   button[0].position=Vector2f(x,y);
   button[1].position=Vector2f(x+max(button_width,tex_width),y);
   button[2].position=Vector2f(x+max(button_width,tex_width),y+tex_height);
   button[3].position=Vector2f(x,y+tex_height);
+  // Color if Selected
+  if(n_button==m_choice)
+    {
+      Color selection = Color(250,050,150);
+      for(size_t i(0);i<4;i++){button[i].color=selection;}
+    }
+
   // Texture
   button[0].texCoords=TextureEngine::getInstance()->getCoords("menu_button_tl");
   button[1].texCoords=TextureEngine::getInstance()->getCoords("menu_button_tr");
   button[2].texCoords=TextureEngine::getInstance()->getCoords("menu_button_br");
   button[3].texCoords=TextureEngine::getInstance()->getCoords("menu_button_bl");
-
   // add
   for(size_t i(0);i<4;i++){va.append(button[i]);}
 
+  // Drawing
   w->draw(va,TextureEngine::getInstance()->getMenuset());
   w->draw(tex);
 

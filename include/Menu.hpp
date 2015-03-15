@@ -8,7 +8,7 @@
 
 const std::string DEFAULT_FONT="menu.ttf";
 const std::string TO_FONT_FILE="../dat/font/";
-const short MENU_CHAR_SIZE=72;
+const short MENU_CHAR_SIZE=48;
 
 
 class Graphics;
