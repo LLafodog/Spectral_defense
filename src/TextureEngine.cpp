@@ -38,23 +38,21 @@ void TextureEngine::addCoords()
 
   // MENU
   //title
-  m_tileCoords.insert(pair<string,Vector2f>("menu_title_tl",Vector2f(0,0)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_title_tr",Vector2f(1000,0)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_title_bl",Vector2f(0,147)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_title_br",Vector2f(1000,147)));
+  addSquare("menu_title",0,0,1000,147);
   //background
-  m_tileCoords.insert(pair<string,Vector2f>("menu_background_tl",Vector2f(0,150)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_background_tr",Vector2f(50,150)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_background_bl",Vector2f(0,200)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_background_br",Vector2f(50,200)));
+  addSquare("menu_background",0,150,50,50);
   // button
-  m_tileCoords.insert(pair<string,Vector2f>("menu_button_tl",Vector2f(0,300)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_button_tr",Vector2f(1000,300)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_button_bl",Vector2f(0,450-6)));
-  m_tileCoords.insert(pair<string,Vector2f>("menu_button_br",Vector2f(1000,450-6)));
- 
+  addSquare("menu_button",0,200,1000,150);
 }
 
+void TextureEngine::addSquare(string name, int x, int y, int w, int h)
+{
+  // WORKING
+  m_tileCoords.insert(pair<string,Vector2f>(name+"_tl",Vector2f(x,y)));
+  m_tileCoords.insert(pair<string,Vector2f>(name+"_tr",Vector2f(x+w,y)));
+  m_tileCoords.insert(pair<string,Vector2f>(name+"_bl",Vector2f(x,y+h)));
+  m_tileCoords.insert(pair<string,Vector2f>(name+"_br",Vector2f(x+w,y+h)));
+}
 TextureEngine* TextureEngine::getInstance()
 {
   if(m_self==nullptr){m_self=new TextureEngine();}

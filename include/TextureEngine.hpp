@@ -25,6 +25,7 @@ protected:
   TextureEngine();
   bool load();
   void addCoords();
+  void addSquare(string name, int x, int y, int w, int h);
 
   static TextureEngine* m_self;
   
