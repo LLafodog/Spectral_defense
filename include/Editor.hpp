@@ -3,6 +3,7 @@
 
 #include<Scene.hpp>
 #include<SFML/Window/Event.hpp>
+#include<SFML/System/Vector2.hpp>
 
 class Core;
 class Graphics;
@@ -19,8 +20,11 @@ public:
   virtual ~Editor();
 
   protected:
+  void drawTileAtMouse(Graphics* g);
+  void modifyTile(int x, int y);
     short m_currentSquare;
   Level* m_level;
+  sf::Vector2f m_mouse;
 };
 
 #endif // EDITOR_HPP

@@ -16,6 +16,7 @@ public :
   inline vector<vector<Square*>> getSquares() const {return m_squares;}
   inline short getWidth() {return m_squares[0].size();}
   inline short getHeight() {return m_squares.size();}
+  void modifyTile(int x, int y, Square* s);
   virtual ~Level();
 
 protected:

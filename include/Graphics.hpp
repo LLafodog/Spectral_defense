@@ -5,6 +5,7 @@
 
 class Game;
 class Level;
+class Square;
 
 class Graphics
 {
@@ -13,6 +14,7 @@ public:
   Graphics(sf::RenderWindow* window);
   void drawGame(Game* game);
   void drawLevel(Level* lvl);
+  void drawTile(int x, int y, Square* s);
   inline sf::RenderWindow* const getWindow() {return m_window;}
   virtual ~Graphics();
 

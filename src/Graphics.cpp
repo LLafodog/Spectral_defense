@@ -52,6 +52,19 @@ void Graphics::drawLevel(Level* lvl)
 
 }
 
+void Graphics::drawTile(int x, int y, Square* s)
+{
+  assert(s && m_window);
+  VertexArray va(Quads);
+  Vertex tile[4];
+  tile[0].position=Vector2f(x,y);
+  tile[1].position=Vector2f(x+TILE_SIZE,y);
+  tile[2].position=Vector2f(x+TILE_SIZE,y+TILE_SIZE);
+  tile[3].position=Vector2f(x,y+TILE_SIZE);
+  for(size_t i(0);i<4;i++){va.append(tile[i]);}
+  m_window->draw(va,TextureEngine::getInstance()->getTileset());
+}
+
 void Graphics::addLevel(Level* lvl, VertexArray& va)
 {
   assert(lvl);

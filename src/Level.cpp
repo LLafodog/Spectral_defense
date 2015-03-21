@@ -2,6 +2,7 @@
 #include<Square.hpp>
 
 #include<Parser.hpp>
+#include<assert.h>
 
 Level::Level(string path)
 {
@@ -20,6 +21,15 @@ Level::Level(int w, int h)
 	  line.push_back(new Square("grass"));
 	}
       m_squares.push_back(line);
+    }
+}
+
+void Level::modifyTile(int x, int y, Square* s)
+{
+  assert(s);
+  if(x>=0 && y>=0 && y<m_squares.size() && x<m_squares[y].size())
+    {
+      m_squares[y][x]=s;
     }
 }
 

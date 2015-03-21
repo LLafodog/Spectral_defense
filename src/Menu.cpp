@@ -56,7 +56,7 @@ void Menu::updateControl(Event event)
 	  case Keyboard::Up:
 	    {
 	      m_choice--;
-	      if(m_choice>NB_CHOICE){m_choice = NB_CHOICE-1;}
+	      if(m_choice>=NB_CHOICE){m_choice = NB_CHOICE-1;}
 	    }break;
 	  default : break;
 	  }
@@ -83,8 +83,7 @@ void Menu::validate()
     case LOAD :{}break;
     case OPTION :{} break;
     case EDITOR:{m_core->putScene(EDITION);} break;
-    case QUIT:{m_core->quit();}
-    default:assert(false);break;
+    case QUIT: default :{m_core->quit();}
     }
 }
 
