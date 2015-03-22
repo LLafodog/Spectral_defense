@@ -25,23 +25,12 @@ bool TextureEngine::load()
 
 void TextureEngine::addCoords()
 {
-  // GRASS
-  m_tileCoords.insert(pair<string,Vector2f>("grass_tl",Vector2f(0,0)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_t",Vector2f(TILE_SIZE,0)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_tr",Vector2f(2*TILE_SIZE,0)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_l",Vector2f(0,TILE_SIZE)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass",Vector2f(TILE_SIZE*3,TILE_SIZE*3)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_r",Vector2f(TILE_SIZE*2,TILE_SIZE)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_bl",Vector2f(0,2*TILE_SIZE)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_b",Vector2f(TILE_SIZE,2*TILE_SIZE)));
-  m_tileCoords.insert(pair<string,Vector2f>("grass_br",Vector2f(2*TILE_SIZE,2*TILE_SIZE)));
-
+  // TILESET
+  addSquare("grass",0,0,32,32);
+  addSquare("ground",32,0,32,32);
   // MENU
-  //title
   addSquare("menu_title",0,0,1000,147);
-  //background
   addSquare("menu_background",0,150,50,50);
-  // button
   addSquare("menu_button",0,200,1000,150);
 }
 

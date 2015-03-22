@@ -27,6 +27,7 @@ Square* SquareFactory::get(string id)
   if(m_self==nullptr){m_self=new SquareFactory();}
   //  Square* copy =new Square(m_squares[id]);
   //  return copy;
+  assert(m_squares[id]);
   return m_squares[id];
 }
 

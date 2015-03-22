@@ -8,6 +8,7 @@ Level::Level(string path)
 {
   m_squares.clear();
   m_squares=Parser::getInstance()->getLevel(path);
+  m_hasChanged = true;
 }
 
 Level::Level(int w, int h)
@@ -29,6 +30,7 @@ void Level::modifyTile(int x, int y, Square* s)
   assert(s);
   if(x>=0 && y>=0 && y<m_squares.size() && x<m_squares[y].size())
     {
+      m_hasChanged = true;
       m_squares[y][x]=s;
     }
 }

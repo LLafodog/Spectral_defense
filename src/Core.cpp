@@ -47,7 +47,7 @@ void Core::run()
 	  if(event.type == Event::Closed){quit();}
 	  if(event.type == Event::KeyPressed 
 	     && event.key.code == Keyboard::Escape)
-	    {putScene(MENU);}
+	    {putScene(MENU);m_graphics->setDefaultView();}
 	  m_currentScene->updateControl(event); 
 	}
       update();

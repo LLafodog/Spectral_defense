@@ -15,6 +15,10 @@ Editor::Editor(Core* core) :
   m_currentSquare=0;
   m_level=new Level(50,50);
   m_mouse = Vector2f(-1,-1);
+  m_view= View(
+	 Vector2f(m_level->getWidth()/2*TILE_SIZE,m_level->getHeight()/2*TILE_SIZE),
+	 Vector2f(12*TILE_SIZE,10*TILE_SIZE)
+	 );
 }
  
 void Editor::updateControl(sf::Event event)
@@ -57,13 +61,20 @@ void Editor::update(sf::Vector2f mouse)
 void Editor::draw(Graphics* g)
 {
   assert(g);
+  g->setView(m_view);
   g->drawLevel(m_level);
+  drawTileAtMouse(g);
+  g->display();
 }
 
 void Editor::drawTileAtMouse(Graphics* g)
 {
   assert(g);
-  g->drawTile(m_mouse.x,m_mouse.y,SquareFactory::getInstance()->get(m_currentSquare));
+  int xt=m_mouse.x-TILE_SIZE/3;
+  xt -= xt%TILE_SIZE;
+  int yt=m_mouse.y-TILE_SIZE/3;
+  yt-=yt%TILE_SIZE;
+  g->drawTile(xt,yt,SquareFactory::getInstance()->get(m_currentSquare));
 }
 
 void Editor::modifyTile(int x, int y)

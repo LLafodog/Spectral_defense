@@ -2,7 +2,9 @@
 #define EDITOR_HPP
 
 #include<Scene.hpp>
+
 #include<SFML/Window/Event.hpp>
+#include<SFML/Graphics/View.hpp>
 #include<SFML/System/Vector2.hpp>
 
 class Core;
@@ -25,6 +27,7 @@ public:
     short m_currentSquare;
   Level* m_level;
   sf::Vector2f m_mouse;
+  sf::View m_view;
 };
 
 #endif // EDITOR_HPP

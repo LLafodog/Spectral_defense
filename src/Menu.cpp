@@ -109,7 +109,7 @@ void Menu::draw(Graphics* g)
   addButton(w,"Editor",3);
   addButton(w,"Quit",4);
 
-  w->display();
+  g->display();
 }
 
 void Menu::addBackground(sf::VertexArray& va, int w, int h) const

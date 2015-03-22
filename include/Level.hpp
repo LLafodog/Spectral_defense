@@ -16,12 +16,14 @@ public :
   inline vector<vector<Square*>> getSquares() const {return m_squares;}
   inline short getWidth() {return m_squares[0].size();}
   inline short getHeight() {return m_squares.size();}
+  inline bool hasChanged() {return m_hasChanged;}
+  inline void setChanged(bool b) {m_hasChanged = b;}
   void modifyTile(int x, int y, Square* s);
   virtual ~Level();
 
 protected:
   vector<vector<Square*>> m_squares;
-  
+  bool m_hasChanged;
 
 };
 

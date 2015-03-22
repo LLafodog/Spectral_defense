@@ -45,6 +45,7 @@ void Game::draw(Graphics* g)
 {
   assert(g);
   g->drawGame(this);
+  g->display();
 }
 
 Game::~Game()
