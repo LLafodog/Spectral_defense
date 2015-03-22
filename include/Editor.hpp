@@ -6,6 +6,7 @@
 #include<SFML/Window/Event.hpp>
 #include<SFML/Graphics/View.hpp>
 #include<SFML/System/Vector2.hpp>
+#include<string>
 
 class Core;
 class Graphics;
@@ -24,10 +25,13 @@ public:
   protected:
   void drawTileAtMouse(Graphics* g);
   void modifyTile(int x, int y);
+  void saveLevel();
+  void loadLevel(std::string path);
+
     short m_currentSquare;
   Level* m_level;
   sf::Vector2f m_mouse;
-  sf::View m_view;
+bool m_viewDirection[4];
 };
 
 #endif // EDITOR_HPP

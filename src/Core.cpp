@@ -2,6 +2,7 @@
 
 #include<SFML/Graphics.hpp>
 #include<Graphics.hpp>
+#include<Camera.hpp>
 #include<TextureEngine.hpp>
 #include<assert.h>
 
@@ -47,7 +48,7 @@ void Core::run()
 	  if(event.type == Event::Closed){quit();}
 	  if(event.type == Event::KeyPressed 
 	     && event.key.code == Keyboard::Escape)
-	    {putScene(MENU);m_graphics->setDefaultView();}
+	    {putScene(MENU);m_graphics->getCamera()->setDefaultView();}
 	  m_currentScene->updateControl(event); 
 	}
       update();

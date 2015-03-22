@@ -18,6 +18,7 @@ public :
   inline short getHeight() {return m_squares.size();}
   inline bool hasChanged() {return m_hasChanged;}
   inline void setChanged(bool b) {m_hasChanged = b;}
+  inline void setSquares(vector<vector<Square*>> sqr) {m_squares=sqr; m_hasChanged=true;}
   void modifyTile(int x, int y, Square* s);
   virtual ~Level();
 

@@ -5,7 +5,13 @@
 #include<Level.hpp>
 #include<TextureEngine.hpp>
 #include<SquareFactory.hpp>
+#include<Square.hpp>
 #include<assert.h>
+#include<fstream>
+
+// debug
+using namespace std;
+#include<iostream>
 
 using namespace sf;
 
@@ -15,10 +21,6 @@ Editor::Editor(Core* core) :
   m_currentSquare=0;
   m_level=new Level(50,50);
   m_mouse = Vector2f(-1,-1);
-  m_view= View(
-	 Vector2f(m_level->getWidth()/2*TILE_SIZE,m_level->getHeight()/2*TILE_SIZE),
-	 Vector2f(12*TILE_SIZE,10*TILE_SIZE)
-	 );
 }
  
 void Editor::updateControl(sf::Event event)
@@ -31,26 +33,29 @@ void Editor::updateControl(sf::Event event)
 	  {
 	  default: break;
 	  case Keyboard::PageDown: 
-{
-m_currentSquare--; 
-if(m_currentSquare<0)
-  {
-    m_currentSquare = NB_SQUARE -1 ;
-  }
-} break;
+	    {
+	      m_currentSquare--; 
+	      if(m_currentSquare<0)
+		{
+		  m_currentSquare = NB_SQUARE -1 ;
+		}
+	    } break;
 	  case Keyboard::PageUp: {m_currentSquare++; m_currentSquare%=NB_SQUARE;} break;
-	  }
-      }break;
-    case Event::MouseButtonPressed :
-      {
-	switch(event.key.code)
-	  {
-	  default : break;
-	  case Mouse::Left : modifyTile(m_mouse.x/TILE_SIZE,m_mouse.y/TILE_SIZE); break;
 	  }
       }break;
     default: break;
     }
+
+  // Constant time required
+  m_viewDirection[0] = Keyboard::isKeyPressed(Keyboard::Up);
+  m_viewDirection[1] = Keyboard::isKeyPressed(Keyboard::Right);
+  m_viewDirection[2] = Keyboard::isKeyPressed(Keyboard::Down);
+  m_viewDirection[3] = Keyboard::isKeyPressed(Keyboard::Left);
+
+  if(Mouse::isButtonPressed(Mouse::Left)) modifyTile(m_mouse.x/TILE_SIZE,m_mouse.y/TILE_SIZE); 
+  // Combinaison	    
+  if(Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::S) ){saveLevel();}
+  if(Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::L) ){cout << "Load which level ? \n ";string path;cin>>path; loadLevel(path);}
 }
 
 void Editor::update(sf::Vector2f mouse)
@@ -61,7 +66,6 @@ void Editor::update(sf::Vector2f mouse)
 void Editor::draw(Graphics* g)
 {
   assert(g);
-  g->setView(m_view);
   g->drawLevel(m_level);
   drawTileAtMouse(g);
   g->display();
@@ -70,9 +74,9 @@ void Editor::draw(Graphics* g)
 void Editor::drawTileAtMouse(Graphics* g)
 {
   assert(g);
-  int xt=m_mouse.x-TILE_SIZE/3;
+  int xt=m_mouse.x;
   xt -= xt%TILE_SIZE;
-  int yt=m_mouse.y-TILE_SIZE/3;
+  int yt=m_mouse.y;
   yt-=yt%TILE_SIZE;
   g->drawTile(xt,yt,SquareFactory::getInstance()->get(m_currentSquare));
 }
@@ -83,6 +87,64 @@ void Editor::modifyTile(int x, int y)
   m_level->modifyTile(x,y,SquareFactory::getInstance()->get(m_currentSquare));
 }
 
+
+void Editor::saveLevel()
+{
+  string line="",name="";
+  cout << " Name of level : " << endl;
+  cin >> name;
+  ofstream writter(name.c_str());
+  assert(m_level);
+  auto squares =  m_level->getSquares();
+  for(size_t i(0);i< squares.size(); i++)
+    {
+      for(size_t j(0);j< squares[i].size(); j++)
+	{
+	  assert(squares[i][j]);
+	  line+=squares[i][j]->getID(); 
+	  line+=" "; 
+	}
+      writter << line << endl;
+      line ="";
+    }
+}
+
+void Editor::loadLevel(string path)
+{
+  string line="";
+  ifstream reader(path.c_str());
+  assert(m_level);
+  vector<vector<Square*>> res; res.clear();
+  if(reader.is_open())
+    {
+      while(getline(reader,line))
+	{
+	  string word = "" ;
+	  vector<Square*> Sline; Sline.clear();
+	  for(char letter:line)
+	    {
+	      if(letter!=' ' ){word+=letter;}
+	      else
+		{
+		  if(word!="")
+		    {
+		      Sline.push_back(SquareFactory::getInstance()->get(word));
+		      word="";
+		    }
+
+		}
+	    }
+	  res.push_back(Sline);
+	  
+	}
+      m_level->setSquares(res);
+    }
+  else
+    {
+      cout << " Couldn't open the file, please retry. \n";
+    }
+  
+}
 
 Editor::~Editor()
 {

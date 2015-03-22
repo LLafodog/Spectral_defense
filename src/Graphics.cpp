@@ -4,6 +4,7 @@
 #include<Level.hpp>
 #include<Square.hpp>
 #include<TextureEngine.hpp>
+#include<Camera.hpp>
 
 // debug
 #include<iostream>
@@ -14,9 +15,9 @@ Graphics::Graphics(RenderWindow* window) :
   m_window(window)
 {
   assert(window);
-  m_view=View(Vector2f(0,0),Vector2f(10,10));
   m_currentArray = VertexArray(Quads);
   m_currentLevel=nullptr;
+  m_camera = new Camera(m_window);
 }
 
 void Graphics::drawGame(Game* game)
@@ -28,18 +29,19 @@ void Graphics::drawGame(Game* game)
 
 void Graphics::drawLevel(Level* lvl)
 {
-  assert(lvl);
+  assert(lvl && m_camera);
   m_window->clear(Color(4,139,154));
     
   if(lvl != m_currentLevel || m_currentLevel->hasChanged())
     {
       m_currentLevel = lvl;
+      m_camera->setLevel(lvl);
       addLevel(lvl);
       lvl->setChanged(false);
     }
 
   // Adding the vertex
-  m_window->setView(m_view);
+  
   m_window->draw(m_currentArray,TextureEngine::getInstance()->getTileset());
 }
 
