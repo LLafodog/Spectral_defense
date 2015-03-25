@@ -31,7 +31,6 @@ public:
     short m_currentSquare;
   Level* m_level;
   sf::Vector2f m_mouse;
-bool m_viewDirection[4];
 };
 
 #endif // EDITOR_HPP

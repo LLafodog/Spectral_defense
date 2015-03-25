@@ -12,8 +12,9 @@ public:
   Camera(sf::RenderWindow* window);
   inline void setView(sf::View view){m_view=view;}
   void setLevel(Level* lvl);
-  inline void setDefaultView(){setView(m_window->getDefaultView());m_window->setView(m_view);}
+  inline void setDefaultView(){m_window->setView(m_window->getDefaultView());}
   void update();
+  void move();
   virtual ~Camera();
 
 protected :

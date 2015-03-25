@@ -39,9 +39,6 @@ void Graphics::drawLevel(Level* lvl)
       addLevel(lvl);
       lvl->setChanged(false);
     }
-
-  // Adding the vertex
-  
   m_window->draw(m_currentArray,TextureEngine::getInstance()->getTileset());
 }
 
@@ -97,6 +94,7 @@ void Graphics::addLevel(Level* lvl)
 	}
     }
 }
+
 
 Graphics::~Graphics()
 {

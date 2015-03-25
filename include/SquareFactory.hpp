@@ -7,13 +7,6 @@ using namespace std;
 
 class Square;
 
-enum SQUARE_LIST
-  {
-    GRASS,
-    GROUND,
-    NB_SQUARE
-  };
-
 class SquareFactory
 // Singleton
 {

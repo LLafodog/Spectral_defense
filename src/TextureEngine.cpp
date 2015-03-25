@@ -1,7 +1,13 @@
 #include<TextureEngine.hpp>
 
 #include<assert.h>
+#include<Defines.hpp>
+
 TextureEngine* TextureEngine::m_self=nullptr;
+
+// debug
+#include<iostream>
+//
 
 using namespace std;
 
@@ -26,8 +32,13 @@ bool TextureEngine::load()
 void TextureEngine::addCoords()
 {
   // TILESET
-  addSquare("grass",0,0,32,32);
-  addSquare("ground",32,0,32,32);
+  // road
+  // TOTAL
+  for(size_t i(0);i<SQUARES_ID.size();i++)
+    {
+      addSquare(SQUARES_ID[i],128*(i%4),128*(i/4),128,128);
+    }
+
   // MENU
   addSquare("menu_title",0,0,1000,147);
   addSquare("menu_background",0,150,50,50);

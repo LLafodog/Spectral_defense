@@ -4,11 +4,11 @@
 #include<Scene.hpp>
 #include<SFML/Graphics/RenderWindow.hpp>
 #include<SFML/Graphics/VertexArray.hpp>
+#include<SFML/System/Vector2.hpp>
 #include<string>
 
 const std::string DEFAULT_FONT="menu.ttf";
 const std::string TO_FONT_FILE="../dat/font/";
-const short MENU_CHAR_SIZE=36;
 
 
 class Graphics;
@@ -27,8 +27,9 @@ protected:
   void validate();
   void addBackground(sf::VertexArray& va, int w, int h) const;
   void addTitle(sf::VertexArray& va, int w, int h) const;
-  void addButton(sf::RenderWindow* w, std::string text, short n_button) const;
+  void addButton(sf::RenderWindow* w, std::string text, short n_button);
 
+  sf::Vector2f m_mouse;
   size_t m_choice;
   bool m_running;
 };

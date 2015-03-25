@@ -1,6 +1,11 @@
 #include<SquareFactory.hpp>
 #include<assert.h>
 #include<Square.hpp>
+#include<Defines.hpp>
+
+// debug
+#include<iostream>
+using namespace std;
 
 SquareFactory* SquareFactory::m_self=nullptr;
 
@@ -12,8 +17,13 @@ SquareFactory::SquareFactory()
 
 void SquareFactory::init()
 {
-  m_squares.insert(pair<string,Square*>("grass",new Square("grass")));
-  m_squares.insert(pair<string,Square*>("ground",new Square("ground")));
+
+  for(size_t i(0);i<SQUARES_ID.size();i++)
+    {
+      Square * sq = new Square(SQUARES_ID[i]);
+        m_squares.insert(pair<string,Square*>(SQUARES_ID[i],sq));
+    }
+
 }
 
 SquareFactory* SquareFactory::getInstance()
@@ -25,23 +35,16 @@ SquareFactory* SquareFactory::getInstance()
 Square* SquareFactory::get(string id)
 {
   if(m_self==nullptr){m_self=new SquareFactory();}
-  //  Square* copy =new Square(m_squares[id]);
-  //  return copy;
   assert(m_squares[id]);
-  return m_squares[id];
+  return m_squares[id]; // Here is the big bug :/
 }
 
 Square* SquareFactory::get(short id)
 {
-  switch(id)
-    {
-    case GRASS: return get("grass");break;
-    case GROUND:return get("ground");break;
-    default : assert(false); break;
-    }
+  return get(SQUARES_ID[id]);
 }
 
 SquareFactory::~SquareFactory()
 {
-  //for(auto pair: m_squares){delete pair.second;}
+  for(auto pair: m_squares){delete pair.second;}
 }

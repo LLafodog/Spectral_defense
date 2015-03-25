@@ -4,6 +4,7 @@
 #include<Graphics.hpp>
 #include<Camera.hpp>
 #include<TextureEngine.hpp>
+#include<SquareFactory.hpp>
 #include<assert.h>
 
 #include<Game.hpp>
@@ -33,7 +34,9 @@ void Core::init()
   m_scenes.push_back(new Editor(this));
   m_graphics=new Graphics(m_window);
   m_currentScene=m_scenes[m_currentSceneIndex];
+
   TextureEngine::getInstance(); // load the textures 
+  SquareFactory::getInstance(); // init the squares 
 }
 
 void Core::run()
@@ -48,7 +51,7 @@ void Core::run()
 	  if(event.type == Event::Closed){quit();}
 	  if(event.type == Event::KeyPressed 
 	     && event.key.code == Keyboard::Escape)
-	    {putScene(MENU);m_graphics->getCamera()->setDefaultView();}
+	    {putScene(MENU);}
 	  m_currentScene->updateControl(event); 
 	}
       update();

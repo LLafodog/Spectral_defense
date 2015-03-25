@@ -24,9 +24,10 @@ public:
 protected:
   TextureEngine();
   bool load();
-  void addCoords();
-  void addSquare(string name, int x, int y, int w, int h);
 
+  void addLine(string name, int nb_x, int width, int height);
+  void addSquare(string name, int x, int y, int w, int h);
+  void addCoords();
   static TextureEngine* m_self;
   
   Texture m_tileset;

@@ -6,6 +6,7 @@
 #include<TextureEngine.hpp>
 #include<SquareFactory.hpp>
 #include<Square.hpp>
+#include<Defines.hpp>
 #include<assert.h>
 #include<fstream>
 
@@ -19,7 +20,7 @@ Editor::Editor(Core* core) :
   Scene(core)
 {
   m_currentSquare=0;
-  m_level=new Level(50,50);
+  m_level=new Level(15,15);
   m_mouse = Vector2f(-1,-1);
 }
  
@@ -37,20 +38,14 @@ void Editor::updateControl(sf::Event event)
 	      m_currentSquare--; 
 	      if(m_currentSquare<0)
 		{
-		  m_currentSquare = NB_SQUARE -1 ;
+		  m_currentSquare = SQUARES_ID.size() -1 ;
 		}
 	    } break;
-	  case Keyboard::PageUp: {m_currentSquare++; m_currentSquare%=NB_SQUARE;} break;
+	  case Keyboard::PageUp: {m_currentSquare++; m_currentSquare%=SQUARES_ID.size();} break;
 	  }
       }break;
     default: break;
     }
-
-  // Constant time required
-  m_viewDirection[0] = Keyboard::isKeyPressed(Keyboard::Up);
-  m_viewDirection[1] = Keyboard::isKeyPressed(Keyboard::Right);
-  m_viewDirection[2] = Keyboard::isKeyPressed(Keyboard::Down);
-  m_viewDirection[3] = Keyboard::isKeyPressed(Keyboard::Left);
 
   if(Mouse::isButtonPressed(Mouse::Left)) modifyTile(m_mouse.x/TILE_SIZE,m_mouse.y/TILE_SIZE); 
   // Combinaison	    
@@ -131,11 +126,9 @@ void Editor::loadLevel(string path)
 		      Sline.push_back(SquareFactory::getInstance()->get(word));
 		      word="";
 		    }
-
 		}
 	    }
 	  res.push_back(Sline);
-	  
 	}
       m_level->setSquares(res);
     }

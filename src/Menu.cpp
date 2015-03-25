@@ -12,9 +12,6 @@ using namespace sf;
 #include<iostream>
 using namespace std;
 
-const int BUTTON_X=0.3*WINDOW_WIDTH;
-const int BUTTON_WIDTH=0.3*WINDOW_WIDTH;
-
 enum CHOICE_LIST
   {
     PLAY,
@@ -66,12 +63,7 @@ void Menu::updateControl(Event event)
 
 void Menu::update(sf::Vector2f mouse)
 {
-  for(size_t i(0);i<NB_CHOICE;i++)
-    {
-      double button_y = 0.3*WINDOW_HEIGHT+(0.05*WINDOW_HEIGHT+MENU_CHAR_SIZE*1.5)*i;
-      FloatRect button(BUTTON_X,button_y, BUTTON_WIDTH,0.05*WINDOW_HEIGHT+MENU_CHAR_SIZE); 
-      if(button.contains(mouse.x,mouse.y))m_choice=i;
-    }
+  m_mouse = mouse;
 }
 
 void Menu::validate()
@@ -160,43 +152,48 @@ void Menu::addTitle(VertexArray& va, int w, int h) const
 }
 
 
-void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button) const
+void Menu::addButton(sf::RenderWindow* w, std::string text, short n_button)
 {
   assert(w);
   // data
-  int w_width=WINDOW_WIDTH,
-    w_height=WINDOW_HEIGHT;
+  int w_width=w->getView().getSize().x,
+    w_height=w->getView().getSize().y;
 
-  int x = BUTTON_X,
-    y = w_height*0.3; 
+  int v_w = w->getView().getSize().x,
+    v_h = w->getView().getSize().y;
 
+  int x = 0.2*v_w,
+    y = v_h*0.3; 
+
+  int char_size = v_h/(4*NB_CHOICE);
 
   // Font
   Font font;
   assert(font.loadFromFile(TO_FONT_FILE+DEFAULT_FONT.c_str()));
 
   // Texte
-  Text tex(text,font,MENU_CHAR_SIZE);
+  Text tex(text,font,char_size);
   tex.setColor(Color::Red);
   int tex_width=tex.getGlobalBounds().width,
-    tex_height=tex.getCharacterSize()+MENU_CHAR_SIZE/2,
-    tex_x = (x+BUTTON_WIDTH/2-tex_width/2);
+    tex_height=tex.getCharacterSize()+char_size/2,
+    tex_x = (x+0.6*v_w/2-tex_width/2),
+    button_w=(0.6*v_w);
 
-  y+=n_button*(tex_height+0.05*w_height);
+  y+=n_button*(tex_height+0.05*v_h);
   tex.setPosition(tex_x,y);
-
 
   /// Drawing the button
   VertexArray va(Quads);
   Vertex button[4];
   // position
   button[0].position=Vector2f(x,y);
-  button[1].position=Vector2f(x+max(BUTTON_WIDTH,tex_width),y);
-  button[2].position=Vector2f(x+max(BUTTON_WIDTH,tex_width),y+tex_height);
+  button[1].position=Vector2f(x+max(button_w,tex_width),y);
+  button[2].position=Vector2f(x+max(button_w,tex_width),y+tex_height);
   button[3].position=Vector2f(x,y+tex_height);
   // Color if Selected
-  if(n_button==m_choice)
+  if((m_mouse.y>=y && m_mouse.y <= y+tex_height && m_mouse.x>=x && m_mouse.x<=x+button_w) || n_button == m_choice)
     {
+      m_choice = n_button; // update choice 
       Color selection = Color(250,050,150);
       for(size_t i(0);i<4;i++){button[i].color=selection;}
     }
