@@ -1,5 +1,6 @@
 #include<Parser.hpp>
 
+#include<SquareFactory.hpp>
 #include<Square.hpp>
 #include<fstream>
 #include<assert.h>
@@ -37,7 +38,7 @@ vector<vector<Square*>> Parser::getLevel(string path)
 	  if(letter!=' ')word+=letter;
 	  else
 	    {
-	      sq_line.push_back(new Square(word));
+	      sq_line.push_back(SquareFactory::getInstance()->get(word));
 	      word="";
 	    }
 	}

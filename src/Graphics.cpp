@@ -25,7 +25,7 @@ void Graphics::drawGame(Game* game)
   assert(m_window && game);
   Level* lvl = game->getCurrentLevel();
   drawLevel(lvl);
- }
+}
 
 void Graphics::drawLevel(Level* lvl)
 {

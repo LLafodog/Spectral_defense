@@ -9,6 +9,7 @@
 #include<Defines.hpp>
 #include<assert.h>
 #include<fstream>
+#include<Parser.hpp>
 
 // debug
 using namespace std;
@@ -17,10 +18,10 @@ using namespace std;
 using namespace sf;
 
 Editor::Editor(Core* core) :
-  Scene(core)
+  Scene(core),
+  m_level(15,15)
 {
   m_currentSquare=0;
-  m_level=new Level(15,15);
   m_mouse = Vector2f(-1,-1);
 }
  
@@ -61,7 +62,7 @@ void Editor::update(sf::Vector2f mouse)
 void Editor::draw(Graphics* g)
 {
   assert(g);
-  g->drawLevel(m_level);
+  g->drawLevel(&m_level);
   drawTileAtMouse(g);
   g->display();
 }
@@ -78,8 +79,7 @@ void Editor::drawTileAtMouse(Graphics* g)
 
 void Editor::modifyTile(int x, int y)
 {
-  assert(m_level);
-  m_level->modifyTile(x,y,SquareFactory::getInstance()->get(m_currentSquare));
+  m_level.modifyTile(x,y,SquareFactory::getInstance()->get(m_currentSquare));
 }
 
 
@@ -88,9 +88,8 @@ void Editor::saveLevel()
   string line="",name="";
   cout << " Name of level : " << endl;
   cin >> name;
-  ofstream writter(name.c_str());
-  assert(m_level);
-  auto squares =  m_level->getSquares();
+  ofstream writter(TO_LEVEL_FOLDER+name.c_str(),ios::ate);
+  auto squares =  m_level.getSquares();
   for(size_t i(0);i< squares.size(); i++)
     {
       for(size_t j(0);j< squares[i].size(); j++)
@@ -102,13 +101,13 @@ void Editor::saveLevel()
       writter << line << endl;
       line ="";
     }
+  writter.close();
 }
 
 void Editor::loadLevel(string path)
 {
   string line="";
   ifstream reader(path.c_str());
-  assert(m_level);
   vector<vector<Square*>> res; res.clear();
   if(reader.is_open())
     {
@@ -130,16 +129,16 @@ void Editor::loadLevel(string path)
 	    }
 	  res.push_back(Sline);
 	}
-      m_level->setSquares(res);
+      m_level.setSquares(res);
     }
   else
     {
-      cout << " Couldn't open the file, please retry. \n";
+      cerr << " Couldn't open the file, please retry. \n";
     }
   
 }
 
 Editor::~Editor()
 {
-
+  m_level.free();
 }

@@ -19,7 +19,9 @@ public :
   inline bool hasChanged() {return m_hasChanged;}
   inline void setChanged(bool b) {m_hasChanged = b;}
   inline void setSquares(vector<vector<Square*>> sqr) {m_squares=sqr; m_hasChanged=true;}
+  void free();
   void modifyTile(int x, int y, Square* s);
+  void update();
   virtual ~Level();
 
 protected:

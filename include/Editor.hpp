@@ -6,6 +6,7 @@
 #include<SFML/Window/Event.hpp>
 #include<SFML/Graphics/View.hpp>
 #include<SFML/System/Vector2.hpp>
+#include<Level.hpp>
 #include<string>
 
 class Core;
@@ -29,7 +30,7 @@ public:
   void loadLevel(std::string path);
 
     short m_currentSquare;
-  Level* m_level;
+  Level m_level;
   sf::Vector2f m_mouse;
 };
 

@@ -38,6 +38,7 @@ void TextureEngine::addCoords()
     {
       addSquare(SQUARES_ID[i],128*(i%4),128*(i/4),128,128);
     }
+  addSquare("grass",0,0,0,0);
 
   // MENU
   addSquare("menu_title",0,0,1000,147);

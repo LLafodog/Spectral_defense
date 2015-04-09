@@ -16,7 +16,7 @@ Game::Game(Core* core) :
 
 void Game::addLevels()
 {
-  m_levels.push_back(Level("test"));
+  m_levels.push_back(Level("second"));
 }
 
 
@@ -38,7 +38,7 @@ void Game::updateControl(Event event)
 
 void Game::update(sf::Vector2f mouse)
 {
-
+  
 }
 
 void Game::draw(Graphics* g)
@@ -50,5 +50,8 @@ void Game::draw(Graphics* g)
 
 Game::~Game()
 {
-
+  for(Level  lvl : m_levels)
+    {
+      lvl.free ();
+    }
 }
