@@ -11,7 +11,7 @@ Tower::Tower(Square* s, string id):
 {
   assert(s);
 }
-//
+
 
 
 Tower::~Tower()
