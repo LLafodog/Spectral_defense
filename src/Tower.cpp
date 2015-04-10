@@ -4,6 +4,7 @@
 #include<assert.h>
 
 using namespace std;
+// test
 
 Tower::Tower(Square* s, string id):
   m_square(s),
