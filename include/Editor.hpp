@@ -24,14 +24,16 @@ public:
   virtual ~Editor();
 
   protected:
+  void runConsole();
   void drawTileAtMouse(Graphics* g);
   void modifyTile(int x, int y);
   void saveLevel();
   void loadLevel(std::string path);
 
-    short m_currentSquare;
+  short m_currentSquare;
   Level m_level;
   sf::Vector2f m_mouse;
+  bool m_generatorTileActivated;
 };
 
 #endif // EDITOR_HPP

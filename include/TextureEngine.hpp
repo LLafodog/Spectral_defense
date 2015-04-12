@@ -8,7 +8,6 @@ using namespace sf;
 using namespace std;
 
 static const std::string TO_IMG_FOLDER="../dat/img/";
-static const short TILE_SIZE=32;
 
 class TextureEngine
 {

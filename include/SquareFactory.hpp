@@ -12,8 +12,8 @@ class SquareFactory
 {
 public :
   
-  Square* get(string id);
-  Square* get(short id);
+  Square* get(string id, int x, int y , bool generatoring = false);
+  Square* get(short id, int x = 0, int y = 0, bool generatoring = false);
   static SquareFactory* getInstance();
   static void free() {delete m_self;}
   virtual ~SquareFactory();

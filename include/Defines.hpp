@@ -3,9 +3,14 @@
 
 #include<string>
 #include<vector>
+
+using namespace std;
+
+static const short TILE_SIZE=32;
+
 static const vector<string> SQUARES_ID = 
   {
-    "road_h",
+    "road_h", //0
     "road_v",
     "inter4",
     "fail",
@@ -20,10 +25,7 @@ static const vector<string> SQUARES_ID =
     "road_3b",
     "road_3l",
     "road_3t",
-    "road_3r"
+    "road_3r", // 15th 
   };
-
-
-
 
 #endif // DEFINES_HPP

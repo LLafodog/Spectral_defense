@@ -2,7 +2,8 @@
 
 #include<Tower.hpp>
 
-Square::Square( string id):
+Square::Square(string id, float x, float y, float size):
+  Positionnable(x,y,size),
   m_id(id)
 {
   m_path= false;

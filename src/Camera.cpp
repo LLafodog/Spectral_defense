@@ -1,8 +1,11 @@
 #include<Camera.hpp>
 
 #include<Level.hpp>
-#include<TextureEngine.hpp>
+#include<Defines.hpp>
 using namespace sf;
+
+#include<iostream>
+using namespace std;
 
 Camera::Camera(RenderWindow* window) :
   m_window(window)
@@ -17,6 +20,7 @@ void Camera::update()
 {
   move();
   m_window->setView(m_view);
+  m_window->setView(m_window->getDefaultView());
 }
 
 void Camera::setLevel(Level* lvl)

@@ -16,7 +16,7 @@ Game::Game(Core* core) :
 
 void Game::addLevels()
 {
-  m_levels.push_back(Level("second"));
+  m_levels.push_back(Level("gene"));
 }
 
 
@@ -38,7 +38,7 @@ void Game::updateControl(Event event)
 
 void Game::update(sf::Vector2f mouse)
 {
-  
+  m_levels[m_currentLevel].update();
 }
 
 void Game::draw(Graphics* g)

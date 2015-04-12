@@ -31,14 +31,13 @@ bool TextureEngine::load()
 
 void TextureEngine::addCoords()
 {
-  // TILESET
-  // road
-  // TOTAL
   for(size_t i(0);i<SQUARES_ID.size();i++)
     {
-      addSquare(SQUARES_ID[i],128*(i%4),128*(i/4),128,128);
+      int size = 128;     
+      addSquare(SQUARES_ID[i],128*(i%4),128*(i/4),size,size);
     }
   addSquare("grass",0,0,0,0);
+
 
   // MENU
   addSquare("menu_title",0,0,1000,147);
@@ -48,7 +47,6 @@ void TextureEngine::addCoords()
 
 void TextureEngine::addSquare(string name, int x, int y, int w, int h)
 {
-  // WORKING
   m_tileCoords.insert(pair<string,Vector2f>(name+"_tl",Vector2f(x,y)));
   m_tileCoords.insert(pair<string,Vector2f>(name+"_tr",Vector2f(x+w,y)));
   m_tileCoords.insert(pair<string,Vector2f>(name+"_bl",Vector2f(x,y+h)));

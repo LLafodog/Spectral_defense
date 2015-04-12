@@ -21,30 +21,32 @@ Parser* Parser::getInstance()
   return m_self;
 }
 
-vector<vector<Square*>> Parser::getLevel(string path)
+void Parser::createLevelFrom(string path,vector<Square*>* v, int* w, int* h)
 {
   fstream reader(TO_LEVEL_FOLDER+path.c_str());
   assert(reader.is_open());
   string line;
 
-  vector<vector<Square*>> res; res.clear();
-
+  v->clear();
+  int x = 0, y = 0;
   while(getline(reader,line))
     {
-      vector<Square*> sq_line; sq_line.clear();
       string word="";
+      x = 0;
       for(char letter:line)
 	{
 	  if(letter!=' ')word+=letter;
 	  else
 	    {
-	      sq_line.push_back(SquareFactory::getInstance()->get(word));
+	      v->push_back(SquareFactory::getInstance()->get(word,x,y));
 	      word="";
+	      x+=TILE_SIZE;
 	    }
 	}
-      res.push_back(sq_line);
+      y+=TILE_SIZE;
     }
-  return res;
+  *h=y/TILE_SIZE;
+  *w = x/TILE_SIZE;
 }
 
 Parser::~Parser()

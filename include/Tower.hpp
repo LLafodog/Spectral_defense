@@ -4,6 +4,7 @@
 #include<string>
 
 class Square;
+class Level;
 
 class Tower
 {
@@ -13,7 +14,7 @@ public:
   virtual ~Tower();
 
 protected:
-  virtual void updateTarget() = 0;
+  virtual void updateTarget(Level) = 0;
  
   std::string m_id;
   Square* m_square;

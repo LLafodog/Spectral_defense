@@ -23,6 +23,7 @@ Editor::Editor(Core* core) :
 {
   m_currentSquare=0;
   m_mouse = Vector2f(-1,-1);
+  m_generatorTileActivated = false;
 }
  
 void Editor::updateControl(sf::Event event)
@@ -42,16 +43,25 @@ void Editor::updateControl(sf::Event event)
 		  m_currentSquare = SQUARES_ID.size() -1 ;
 		}
 	    } break;
-	  case Keyboard::PageUp: {m_currentSquare++; m_currentSquare%=SQUARES_ID.size();} break;
+	  case Keyboard::PageUp: 
+	    {
+	      m_currentSquare++; m_currentSquare%=SQUARES_ID.size();
+	    } break;
+
+	  case Keyboard::G : 
+	    {
+	      m_generatorTileActivated = !m_generatorTileActivated;
+	    }
 	  }
       }break;
     default: break;
     }
 
-  if(Mouse::isButtonPressed(Mouse::Left)) modifyTile(m_mouse.x/TILE_SIZE,m_mouse.y/TILE_SIZE); 
+  if(Mouse::isButtonPressed(Mouse::Left)) modifyTile(m_mouse.x,m_mouse.y); 
   // Combinaison	    
   if(Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::S) ){saveLevel();}
   if(Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::L) ){cout << "Load which level ? \n ";string path;cin>>path; loadLevel(path);}
+  if(Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::K) ){runConsole();}
 }
 
 void Editor::update(sf::Vector2f mouse)
@@ -59,10 +69,17 @@ void Editor::update(sf::Vector2f mouse)
   m_mouse = mouse ;
 }
 
+void Editor::runConsole()
+{
+  // TO DO 
+  cout << " ====== Menu ===== \n" 
+       << " 1) "<<endl;
+}
+
 void Editor::draw(Graphics* g)
 {
   assert(g);
-  g->drawLevel(&m_level);
+  g->drawLevel(&m_level,true);
   drawTileAtMouse(g);
   g->display();
 }
@@ -74,12 +91,16 @@ void Editor::drawTileAtMouse(Graphics* g)
   xt -= xt%TILE_SIZE;
   int yt=m_mouse.y;
   yt-=yt%TILE_SIZE;
-  g->drawTile(xt,yt,SquareFactory::getInstance()->get(m_currentSquare));
+
+  Square* s = SquareFactory::getInstance()->get(m_currentSquare);
+  g->drawTile(xt,yt,s,s->getSize());
+  delete s;
 }
 
 void Editor::modifyTile(int x, int y)
 {
-  m_level.modifyTile(x,y,SquareFactory::getInstance()->get(m_currentSquare));
+  Square* s = SquareFactory::getInstance()->get(m_currentSquare,x-x%TILE_SIZE,y-y%TILE_SIZE,m_generatorTileActivated);
+    m_level.modifyTile(x,y,s);      
 }
 
 
@@ -92,14 +113,16 @@ void Editor::saveLevel()
   auto squares =  m_level.getSquares();
   for(size_t i(0);i< squares.size(); i++)
     {
-      for(size_t j(0);j< squares[i].size(); j++)
-	{
-	  assert(squares[i][j]);
-	  line+=squares[i][j]->getID(); 
+	  assert(squares[i]);
+	  line+=squares[i]->getID();
+	  if(squares[i]->isGenerator())line+='*';
 	  line+=" "; 
-	}
-      writter << line << endl;
-      line ="";
+	  if(i%m_level.getWidth()==0 && i!=0)
+	    {
+	      writter << line << endl;
+	      line ="";
+	    }
+	  
     }
   writter.close();
 }
@@ -107,8 +130,10 @@ void Editor::saveLevel()
 void Editor::loadLevel(string path)
 {
   string line="";
-  ifstream reader(path.c_str());
-  vector<vector<Square*>> res; res.clear();
+  ifstream reader(TO_LEVEL_FOLDER+path.c_str());
+  vector<Square*> res; res.clear();
+  int x = 0,
+    y = 0;
   if(reader.is_open())
     {
       while(getline(reader,line))
@@ -122,12 +147,14 @@ void Editor::loadLevel(string path)
 		{
 		  if(word!="")
 		    {
-		      Sline.push_back(SquareFactory::getInstance()->get(word));
+		      res.push_back(SquareFactory::getInstance()->get(word,x,y));
 		      word="";
 		    }
+		  x+=TILE_SIZE;
 		}
 	    }
-	  res.push_back(Sline);
+	  y+=TILE_SIZE;
+	  x=0;
 	}
       m_level.setSquares(res);
     }

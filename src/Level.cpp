@@ -13,44 +13,54 @@ using namespace std;
 Level::Level(string path)
 {
   m_squares.clear();
-  m_squares=Parser::getInstance()->getLevel(path); // to do passer le tableau en arg pour mémoire
+  Parser::getInstance()->createLevelFrom(path,&m_squares,&m_width,&m_height);
   m_hasChanged = true;
 }
 
-Level::Level(int w, int h)
+Level::Level(int w, int h) : 
+  m_width(w),
+  m_height(h)
 {
   m_squares.clear();
-  vector<Square*> line; line.clear();
   for(size_t i(0);i<h;i++)
     {
-      line.clear();
       for(size_t j(0);j<w;j++)
 	{
-	  line.push_back(SquareFactory::getInstance()->get("grass"));
+	  m_squares.push_back(SquareFactory::getInstance()->get("grass",i*TILE_SIZE,j*TILE_SIZE));
 	}
-      m_squares.push_back(line);
     }
 }
 
 void Level::modifyTile(int x, int y, Square* s)
 {
   assert(s);
-  if(x>=0 && y>=0 && y<m_squares.size() && x<m_squares[y].size())
+
+    for(int i(0);i<m_squares.size();i++)
     {
-      // fuite
-      // delete m_squares[y][x];
-      m_hasChanged = true;
-      m_squares[y][x]=s;
+      Square* actualSquare = m_squares[i];
+      assert(actualSquare);
+      if(actualSquare->getX() == x-x%TILE_SIZE && actualSquare->getY() == y-y%TILE_SIZE)
+	{
+	  delete actualSquare;
+	  m_hasChanged = true;
+	  m_squares[i] = s;
+	}
     }
+}
+
+void Level::update()
+{
+  for(Square* s: m_squares)
+    {
+      assert(s);
+      s->update();
+    }
+
 }
 
 void Level::free()
 {
-  // leak memory :(
-  for (vector<Square*> line : m_squares)
-    {
-      for(Square* s : line){assert(s);delete s;}
-    }
+  for(Square* s : m_squares){assert(s);delete s;}
 }
 
 

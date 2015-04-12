@@ -18,7 +18,7 @@ class Parser
 public:
   virtual ~Parser();
   static Parser* getInstance(); 
-  vector<vector<Square*>> getLevel(string path);
+  void createLevelFrom(string path,vector<Square*>* v, int* w, int* h);
 
 protected:
   Parser();
